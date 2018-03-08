@@ -1,0 +1,34 @@
+﻿<h1> {{dashboard}}</h1>
+
+
+
+<div class="row col-md-12">
+    <select ng-model="selectedYear" ng-change="getdata(selectedYear,0)">
+        <option value="">--Select--</option>
+        <option ng-repeat="i in years">{{i.key}}</option>
+    </select>
+
+    <select ng-model="selectedMonth" ng-change="getdataonchange(selectedYear,selectedMonth)">
+        <option ng-repeat="i in monthFullNames" value="{{i.value}}">{{i.name}}</option>
+    </select>
+</div>
+<div class="row col-md-11">
+    <table class="table table-responsive table-bordered card-block">
+        <thead>
+            <tr>
+                <th>
+                    Month Name
+                </th>
+                <th ng-repeat="x in weekdays">
+                    {{x.key}}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="y in data">
+                <td>{{y.monthname}}</td>
+                <td ng-repeat="z in y.days" title="{{z.fulldate}} , {{z.dayname}}" ng-class="(z.dayname === 'Sunday' || z.dayname === 'Saturday') ? 'bg-info' : ''" ng-click="onchangedate(z)">{{z.date}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
