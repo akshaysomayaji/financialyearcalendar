@@ -3,14 +3,15 @@
 
     angular.module('app.module.dashboard', []);
 
-    angular.module('app.module.dashboard').controller('dashboardCtrl', dashboardCtrl);
+    angular.module('app.module.dashboard').controller('dashboardCtrl', dashboardCtrl).controller("TermsAndContionsModalCtrl", TermsAndContionsModalCtrl);
 
-    function dashboardCtrl($scope) {
+    function dashboardCtrl($scope,$uibModal) {
         $scope.dashboard = "dashboard page";
         var currentYear = new Date().getFullYear();
         $scope.selectedMonth = null;
         $scope.years = [{ key: currentYear-1, value: currentYear-1 },{ key: currentYear, value: currentYear }, { key: currentYear + 1, value: currentYear + 1 }];
-
+        $scope.uniqueWeeaks = [];
+        $scope.monthlyDays = [];
 
         $scope.weekdays = [
             { 'key': 'Sunday', 'value': 1 },
@@ -55,7 +56,7 @@
 
        // $scope.data = [{ month: 0, monthname: '', days: [{ 'dayname': '', 'date': '' }] }];
 
-        $scope.getdata = function (year, month) {      
+        $scope.getdata = function (year, month) {
             $scope.data = [];
             var startmonth = $scope.selectedMonth == null ? 0 : $scope.selectedMonth;
             var endmonth = month;
@@ -65,11 +66,17 @@
         };
 
         $scope.getdataonchange = function (year, month) {
+            if (month == "") {
+                $scope.selectedMonth = null;
+                $scope.getdata(year, 0);
+                return;
+            }
             $scope.data = [];
             var startmonth = $scope.selectedMonth;
             var endmonth = 0;
             var returndata = getDaysInMonth(startmonth, endmonth, $scope.selectedMonth, year);
             $scope.data = returndata;
+            
         };
 
 
@@ -197,8 +204,35 @@
             return day + "-" + monthNames[month] + "-" + year;
         };
 
-        $scope.onchangedate = function (x) {
-            alert(x.fulldate);
+
+
+
+        $scope.onchangedate = function (date) {
+            $scope.formData = { "date": date };
+            var modalInstance = $uibModal.open({
+                animation: true,
+                controller: 'TermsAndContionsModalCtrl',
+                templateUrl: 'Views/common/partialview/_partialView.html',
+                scope: $scope,
+                backdrop: 'static',
+                keyboard: false,
+                size: 'sm',
+                resolve: {
+                    items: function () {
+                        return $scope.formData;
+                    }
+                }
+            });
+            modalInstance.result.then(function () {
+            }, function () { });
+        };
+
+    }
+
+
+    function TermsAndContionsModalCtrl($scope, $modalInstance) {
+        $scope.closeModal = function () {
+            $modalInstance.close();
         };
     }
 

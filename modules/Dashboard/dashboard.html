@@ -7,6 +7,7 @@
         </select>
         <label> Select Month </label>
         <select ng-model="selectedMonth" ng-change="getdataonchange(selectedYear,selectedMonth)">
+             <option value="">All</option>
             <option ng-repeat="i in monthFullNames" value="{{i.value}}">{{i.name}}</option>
         </select>
     </div>
@@ -27,9 +28,11 @@
             <tbody>
                 <tr ng-repeat="y in data">
                     <td>{{y.monthname}} - {{selectedYear}}</td>
-                    <td ng-repeat="z in y.days" title="{{z.fulldate}} , {{z.dayname}}" ng-class="(z.dayname === 'Sunday' || z.dayname === 'Saturday') ? 'bg-info' : ''" ng-click="onchangedate(z)">{{z.date}}</td>
+                    <td ng-repeat="z in y.days" title="{{z.fulldate}} {{z.dayname}}" ng-class="(z.dayname === 'Sunday' || z.dayname === 'Saturday') ? 'bg-info' : ''" ng-click="onchangedate(z)">{{z.date}}</td>
                 </tr>
             </tbody>
         </table>
+
+        
     </div>
 </div>
