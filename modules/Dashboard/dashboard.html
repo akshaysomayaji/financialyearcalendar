@@ -1,14 +1,17 @@
 ﻿<div class="card-block">
     <div class="row col-md-12">
+        <label> Select Year </label>
         <select ng-model="selectedYear" ng-change="getdata(selectedYear,0)">
             <option value="">--Select--</option>
             <option ng-repeat="i in years">{{i.key}}</option>
         </select>
-
+        <label> Select Month </label>
         <select ng-model="selectedMonth" ng-change="getdataonchange(selectedYear,selectedMonth)">
             <option ng-repeat="i in monthFullNames" value="{{i.value}}">{{i.name}}</option>
         </select>
     </div>
+    <br />
+    <br />
     <div class="row col-md-12">
         <table class="table table-responsive table-bordered card-block">
             <thead>
@@ -23,7 +26,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="y in data">
-                    <td>{{y.monthname}}</td>
+                    <td>{{y.monthname}} - {{selectedYear}}</td>
                     <td ng-repeat="z in y.days" title="{{z.fulldate}} , {{z.dayname}}" ng-class="(z.dayname === 'Sunday' || z.dayname === 'Saturday') ? 'bg-info' : ''" ng-click="onchangedate(z)">{{z.date}}</td>
                 </tr>
             </tbody>

@@ -7,8 +7,9 @@
 
     function dashboardCtrl($scope) {
         $scope.dashboard = "dashboard page";
-
-        $scope.years = [{ key: '2018', value: 2018 }, { key: '2019', value: 2019 }];
+        var currentYear = new Date().getFullYear();
+        $scope.selectedMonth = null;
+        $scope.years = [{ key: currentYear-1, value: currentYear-1 },{ key: currentYear, value: currentYear }, { key: currentYear + 1, value: currentYear + 1 }];
 
 
         $scope.weekdays = [
@@ -54,12 +55,12 @@
 
        // $scope.data = [{ month: 0, monthname: '', days: [{ 'dayname': '', 'date': '' }] }];
 
-        $scope.getdata = function (year, month) {
+        $scope.getdata = function (year, month) {      
             $scope.data = [];
-            var startmonth = month;
-            var endmonth = 0;
-            var returndata = getDaysInMonth(startmonth,endmonth,11,year);
-            console.log('returndata =', returndata);
+            var startmonth = $scope.selectedMonth == null ? 0 : $scope.selectedMonth;
+            var endmonth = month;
+            var monthtemp = $scope.selectedMonth == null ? 11 : $scope.selectedMonth;
+            var returndata = getDaysInMonth(startmonth, endmonth, monthtemp, year);
             $scope.data = returndata;
         };
 
@@ -68,7 +69,6 @@
             var startmonth = $scope.selectedMonth;
             var endmonth = 0;
             var returndata = getDaysInMonth(startmonth, endmonth, $scope.selectedMonth, year);
-            console.log('returndata =', returndata);
             $scope.data = returndata;
         };
 
