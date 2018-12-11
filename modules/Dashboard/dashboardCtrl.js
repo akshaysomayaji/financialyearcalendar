@@ -189,12 +189,6 @@
             return data;
         }
 
-
-        function getAllDetail(year, months) {
-
-        }
-
-
         function GetFormattedDate(todayTime) {
             todayTime = new Date(todayTime);
             var month = todayTime.getMonth();
