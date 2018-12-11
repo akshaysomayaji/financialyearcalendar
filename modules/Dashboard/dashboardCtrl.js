@@ -13,6 +13,10 @@
         $scope.uniqueWeeaks = [];
         $scope.monthlyDays = [];
 
+        $scope.cursorStylePointer = { 'cursor': 'pointer' };
+        $scope.cursorStyleNotAllowed = { 'cursor': 'not-allowed'}
+       
+
         $scope.weekdays = [
             { 'key': 'Sunday', 'value': 1 },
             { 'key': 'Monday', 'value': 2 },
@@ -63,6 +67,8 @@
             var monthtemp = $scope.selectedMonth == null ? 11 : $scope.selectedMonth;
             var returndata = getDaysInMonth(startmonth, endmonth, monthtemp, year);
             $scope.data = returndata;
+            $scope.getEvents();
+            
         };
 
         $scope.getdataonchange = function (year, month) {
@@ -76,7 +82,7 @@
             var endmonth = 0;
             var returndata = getDaysInMonth(startmonth, endmonth, $scope.selectedMonth, year);
             $scope.data = returndata;
-            
+            $scope.getEvents();
         };
 
 
@@ -133,9 +139,9 @@
                 days.push({});
                 days.push({});
             }
-            var returndata = { month: month, monthname: $scope.monthFullNames[new Date(date).getMonth()].name, days: days, startdayname: startdayname };
+            var returndata = { month: month, monthname: $scope.monthFullNames[new Date(date).getMonth()].name, days: days, startdayname: startdayname};
             while (date.getMonth() === parseInt(month)) {
-                var obj = { date: '', dayname: '' };
+                var obj = { date: '', dayname: '', events: []  };
                 obj.fulldate = GetFormattedDate(new Date(date));
                 obj.dayname = weekdays[new Date(date).getDay()];
                 obj.date = new Date(date).getDate();
@@ -205,26 +211,42 @@
         };
 
 
+        $scope.getEvents = function () {
+            $scope.events = [{ "date": "12-Jan-2018", "eventName": "Meeting" }];
+            $scope.data.forEach(function (obj) {
+                obj.days.forEach(function (y) {
+                    var result = $scope.events.filter(function (i) { return i.date == y.fulldate; });
+                    if (result.length != 0) {
+                        y.events.push(result[0]);
+                    }
+                });
+            });
+        }
+
+
 
 
         $scope.onchangedate = function (date) {
-            $scope.formData = { "date": date };
-            var modalInstance = $uibModal.open({
-                animation: true,
-                controller: 'TermsAndContionsModalCtrl',
-                templateUrl: 'Views/common/partialview/_partialView.html',
-                scope: $scope,
-                backdrop: 'static',
-                keyboard: false,
-                size: 'sm',
-                resolve: {
-                    items: function () {
-                        return $scope.formData;
+            if (date.date) {
+                $scope.formData = { "date": date };
+                var modalInstance = $uibModal.open({
+                    animation: true,
+                    controller: 'TermsAndContionsModalCtrl',
+                    templateUrl: 'Views/common/partialview/_partialView.html',
+                    scope: $scope,
+                    backdrop: 'static',
+                    keyboard: true,
+                    size: 'sm',
+                    resolve: {
+                        items: function () {
+                            return $scope.formData;
+                        }
                     }
-                }
-            });
-            modalInstance.result.then(function () {
-            }, function () { });
+                });
+                modalInstance.result.then(function () {
+                }, function () { });
+            }
+            
         };
 
     }

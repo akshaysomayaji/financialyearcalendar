@@ -28,7 +28,10 @@
             <tbody>
                 <tr ng-repeat="y in data">
                     <td>{{y.monthname}} - {{selectedYear}}</td>
-                    <td ng-repeat="z in y.days" title="{{z.fulldate}} {{z.dayname}}" ng-class="(z.dayname === 'Sunday' || z.dayname === 'Saturday') ? 'bg-info' : ''" ng-click="onchangedate(z)">{{z.date}}</td>
+                    <td  ng-repeat="z in y.days" title="{{z.fulldate}} {{z.dayname}}" ng-style=" !z.date?cursorStyleNotAllowed:cursorStylePointer" ng-class="(z.dayname === 'Sunday' || z.dayname === 'Saturday') ? 'bg-info' : ''" ng-click="onchangedate(z)">
+                        <p>{{z.date}}</p>
+                        <p class="btn btn-sm btn-info" ng-repeat="x in z.events">{{x.eventName}}</p>
+                    </td>
                 </tr>
             </tbody>
         </table>

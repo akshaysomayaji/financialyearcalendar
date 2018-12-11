@@ -6,8 +6,12 @@
             <h4 class="modal-title">Selected Date</h4>
         </div>
         <div class="modal-body">
-            <p>date : {{formData.date.fulldate}}</p>
-            <p>day : {{formData.date.dayname}}</p>
+            <p>Date : <b>{{formData.date.fulldate}}</b></p>
+            <p>Day  : <b>{{formData.date.dayname}}</b></p>
+            <p ng-if="formData.date.events.length ==0"> No Events</p>
+            <p ng-repeat="i in formData.date.events">
+                {{i.eventName}}
+            </p>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="closeModal()">Close</button>
